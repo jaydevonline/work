@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{padding:0;margin:0}
+body{
+background-color:#295200;
+}
+
+#wrapper{height:2000px;width:520px;margin:0 auto; background-image:url(images/road.png) }
+
+#main{ width:520px;height:2000px; 
+	/*	background: url(images/car_red.png) 30px 750px no-repeat,
+					url(images/car_blue.png) 320px 150px no-repeat,
+					url(images/car_green.png) 180px 1390px no-repeat */
+		 }
