@@ -2,8 +2,7 @@ var rgbBoxes = {
 
 	config: {
 	  	//default config goes here
-	    'lang': 'en',
-	    'thisHasValue' : ''
+	    'lang': 'en'
 	},
 
 
@@ -15,28 +14,9 @@ var rgbBoxes = {
 
     	var config = this.config ;
 
-        this.currentColor();
-        this.setColorClass(config);
         this.setBoxColor(config);
         this.resetAll(config);
         	
-    },
-
-    currentColor : function(){
-    	
-    	return $(this.config.colorControllerCurrent).val();
-
-    },
-
-    setColorClass : function(config){
-
-		config.colorController.on('click',function(){
-
-			var elem = $(this) ;
-
-			rgbBoxes.config.thisHasValue = elem.val() ;
-		
-		});    	
     },
 
     setBoxColor :function(config){
@@ -44,30 +24,40 @@ var rgbBoxes = {
     	config.box.on('click',function(){
 
 			var elem = $(this);
-			var selectedColor = rgbBoxes.currentColor();
-			var colorClass = config.thisHasValue ;
+			var selectedColor = $('input[name="color_controler"]:checked').val();
+			var colorClass; 
 
-			if(colorClass === ''){
+			var classList = $(elem).attr('class').split(' ');
+			if(classList[1]){
+				colorClass = classList[1];
+			}
+
+			if(selectedColor === undefined ){
 				alert('Please select a color before clicking on boxes.')
 			}
-			else{
-				if(!elem.hasClass(colorClass)){
 
-					elem.attr('class', config.boxStyleClass);
-					elem.addClass(colorClass)
+			else{
+
+				if(elem.hasClass(colorClass) && colorClass !== selectedColor){
+					alert('Already applied ' + colorClass + ' color. Choose any other box.' );
+					return false;
+					}
+				else if(elem.hasClass(colorClass) && colorClass === selectedColor){
+					alert('Oops! can not apply same color again. Color ' + colorClass + ' is already applied.' );
+					return false;
 				}	
-				else{
-					alert("Already applied " + colorClass + " color") ;
+				else {
+					elem.attr('class', config.boxStyleClass);
+					elem.addClass(selectedColor);
 				}
-			}		
+			}
+				
 		});
     },
 
     resetAll : function(config){
 
     	config.reset.on('click',function(){
-
-    		rgbBoxes.config.thisHasValue = '' ;
     		config.box.attr('class', config.boxStyleClass);
 
     	});
@@ -82,9 +72,7 @@ $(document).ready(function(){
 	rgbBoxes.init({
 		documentBody : $('body'), 
 		box : $('.box'),
-		boxStyleClass : 'box' ,
-		colorController : $('input[name="color_controler"]'),
-		colorControllerCurrent : $('input[name="color_controler"]:checked'),
+		boxStyleClass : 'box',
 		reset : $('.btn_reset') 
 	}); 
 
